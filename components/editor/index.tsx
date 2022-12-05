@@ -14,8 +14,9 @@ function Editor() {
     return (
         <div>
 
-            <EditorContent editor={editor}/>
             <Toolbar editor={editor}/>
+            <EditorContent editor={editor}/>
+
 
         </div>
     );
