@@ -12,7 +12,7 @@ function DropdownOption({option, head}: DropdownOptionProps) {
         <Fragment>
 
             <button className='relative' onBlur={() => setShowOptions(false)}
-                    onClick={() => setShowOptions(!showOptions)}>
+                    onMouseDown={() => setShowOptions(!showOptions)}>
                 {head}
                 {showOptions && <div className='min-w-max absolute z-10 top-full mt-4   border-2 border-primary-dark
           dark:border-primary rounded text-left bg-primary dark:bg-primary-dark'>

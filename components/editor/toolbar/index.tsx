@@ -1,7 +1,22 @@
 import React from 'react';
 import {Editor} from "@tiptap/core";
 import DropdownOption from "../../common/DropdownOption";
-import {AiFillCaretDown} from "react-icons/all";
+import {
+    AiFillCaretDown,
+    BsBraces,
+    BsCode,
+    BsImageFill,
+    BsLink45Deg,
+    BsListOl,
+    BsListUl,
+    BsTypeBold,
+    BsTypeItalic,
+    BsTypeStrikethrough,
+    BsTypeUnderline,
+    BsYoutube,
+    RiDoubleQuotesL
+} from "react-icons/all";
+import Button from "./Button";
 
 interface ToolBarProps {
     editor: Editor | null
@@ -13,19 +28,19 @@ function ToolBar({editor}: ToolBarProps) {
 
     const options = [{
         label: 'Paragraph',
-        onMouseDown: () => editor.chain().focus().setParagraph().run()
+        onClick: () => editor.chain().focus().setParagraph().run()
     },
         {
             label: 'Heading 1',
-            onMouseDown: () => editor.chain().focus().toggleHeading({level: 1}).run()
+            onClick: () => editor.chain().focus().toggleHeading({level: 1}).run()
         },
         {
             label: 'Heading 2',
-            onMouseDown: () => editor.chain().focus().toggleHeading({level: 2}).run()
+            onClick: () => editor.chain().focus().toggleHeading({level: 2}).run()
         },
         {
             label: 'Heading 3',
-            onMouseDown: () => editor.chain().focus().toggleHeading({level: 3}).run()
+            onClick: () => editor.chain().focus().toggleHeading({level: 3}).run()
         },
 
 
@@ -51,8 +66,56 @@ function ToolBar({editor}: ToolBarProps) {
     }
 
     return (
-        <div>
+        <div className='flex items-center'>
+
             <DropdownOption option={options} head={<Head/>}/>
+
+            <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
+            <div className='flex items-center space-x-3'>
+                <Button onClick={() => editor.chain().focus().toggleBold().run()}>
+                    <BsTypeBold/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleItalic().run()}>
+                    <BsTypeItalic/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleUnderline().run()}>
+                    <BsTypeUnderline/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleStrike().run()}>
+                    <BsTypeStrikethrough/>
+                </Button>
+            </div>
+            <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
+            <div className='flex items-center space-x-3'>
+                <Button onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+                    <RiDoubleQuotesL/>
+
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleCode().run()}>
+                    <BsCode/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+                    <BsBraces/>
+                </Button>
+                <Button>
+                    <BsLink45Deg/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+                    <BsListOl/>
+                </Button>
+                <Button onClick={() => editor.chain().focus().toggleBulletList().run()}>
+                    <BsListUl/>
+                </Button>
+            </div>
+            <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
+            <div className='flex items-center space-x-3'>
+                <Button>
+                    <BsYoutube/>
+                </Button>
+                <Button>
+                    <BsImageFill/>
+                </Button>
+            </div>
         </div>
     );
 }

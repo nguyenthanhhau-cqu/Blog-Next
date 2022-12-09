@@ -17,7 +17,7 @@ interface Props {
 
 const navItems = [
     {href: "/admin", icon: AiOutlineDashboard, label: "Dashboard"},
-    {href: "/admin/posts", icon: AiOutlineContainer, label: "Posts"},
+    {href: "/admin/post", icon: AiOutlineContainer, label: "Posts"},
     {href: "/admin/users", icon: AiOutlineTeam, label: "Users"},
     {href: "/admin/comments", icon: AiOutlineMail, label: "Comments"},
     {href: "/admin/contact", icon: AiOutlineContacts, label: "Contact"},
