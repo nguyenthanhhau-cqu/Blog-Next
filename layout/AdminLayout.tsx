@@ -28,14 +28,13 @@ function AdminLayout({children}: Props) {
         <div className="flex ">
             <AdminNav navItems={navItems}/>
             <div className='flex-1 p-4'>{children}</div>
-
             <Link href="/admin/post/create">
                 <div
                     className="bg-secondary-dark dark:bg-secondary-light text-primary dark:text-primary-dark fixed z-10 right-10 bottom-10 p-3 rounded-full hover:scale-90 shadow-sm transition">
                     <AiOutlineFileAdd size={24}/>
                 </div>
             </Link>
-            {/* create button */}
+
 
         </div>
     );

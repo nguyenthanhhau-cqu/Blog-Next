@@ -1,5 +1,7 @@
 import React from "react";
 import AdminLayout from "../layout/AdminLayout";
+import Link from "next/link";
+import {AiOutlineFileAdd} from "react-icons/ai";
 
 function Home() {
     return (
@@ -16,6 +18,7 @@ function Home() {
                 perferendis doloribus asperiores repellat.
             </div>
 
+            {/* create button */}
         </AdminLayout>
     )
 }

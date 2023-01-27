@@ -6,6 +6,9 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+      backgroundImage: {
+          'png-pattern': "url('/empty-bg.jpg')"
+      },
     extend: {
         transitionProperty: {
             width: "width"

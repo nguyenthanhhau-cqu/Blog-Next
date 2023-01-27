@@ -6,7 +6,6 @@ import {
     BsBraces,
     BsCode,
     BsImageFill,
-    BsLink45Deg,
     BsListOl,
     BsListUl,
     BsTypeBold,
@@ -17,13 +16,18 @@ import {
     RiDoubleQuotesL
 } from "react-icons/all";
 import Button from "./Button";
+import InsertLink from "../Link/InsertLink";
+import {link} from "fs";
+import {linkOption} from "../Link/LinkForm";
+import EmBedYoutube from "./EmBedYoutube";
 
 interface ToolBarProps {
     editor: Editor | null
+    onOpenImageClick?(): void
 }
 
 
-function ToolBar({editor}: ToolBarProps) {
+function ToolBar({editor,onOpenImageClick}: ToolBarProps) {
     if (!editor) return null;
 
     const options = [{
@@ -54,6 +58,14 @@ function ToolBar({editor}: ToolBarProps) {
         return 'Paragraph'
 
     }
+    const handleLinkSubmit = ({url, openInNewTab}: linkOption) => {
+        if(openInNewTab)  editor.commands.setLink({href: url, target: '_blank' })
+        else  editor.commands.setLink({href: url})
+    }
+
+    const handleEmbedYoutube = (url: string) => {
+            editor.chain().focus().setYoutubeVideo({src: url}).run()
+    }
 
 
     const Head = () => {
@@ -72,47 +84,44 @@ function ToolBar({editor}: ToolBarProps) {
 
             <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
             <div className='flex items-center space-x-3'>
-                <Button onClick={() => editor.chain().focus().toggleBold().run()}>
+                <Button active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}>
                     <BsTypeBold/>
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleItalic().run()}>
+                <Button active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()}>
                     <BsTypeItalic/>
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleUnderline().run()}>
+                <Button active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}>
                     <BsTypeUnderline/>
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleStrike().run()}>
+                <Button active={editor.isActive('strike')} onClick={() => editor.chain().focus().toggleStrike().run()}>
                     <BsTypeStrikethrough/>
                 </Button>
             </div>
             <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
             <div className='flex items-center space-x-3'>
-                <Button onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+                <Button active={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
                     <RiDoubleQuotesL/>
 
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleCode().run()}>
+                <Button active={editor.isActive('code')} onClick={() => editor.chain().focus().toggleCode().run()}>
                     <BsCode/>
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+                <Button active={editor.isActive('codeBlock')} onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
                     <BsBraces/>
                 </Button>
-                <Button>
-                    <BsLink45Deg/>
-                </Button>
-                <Button onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+                <InsertLink onSubmit={handleLinkSubmit} />
+                <Button active={editor.isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
                     <BsListOl/>
                 </Button>
-                <Button onClick={() => editor.chain().focus().toggleBulletList().run()}>
+                <Button active={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}>
                     <BsListUl/>
                 </Button>
             </div>
-            <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8'/>
+            <div className='h-4 w-[1px] bg-secondary-dark dark:bg-secondary-light mx-8 ' />
             <div className='flex items-center space-x-3'>
-                <Button>
-                    <BsYoutube/>
-                </Button>
-                <Button>
+
+                <EmBedYoutube onSubmit={handleEmbedYoutube} />
+                <Button onClick={onOpenImageClick}>
                     <BsImageFill/>
                 </Button>
             </div>
