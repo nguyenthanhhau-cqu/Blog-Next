@@ -7,7 +7,8 @@ import {Placeholder} from "@tiptap/extension-placeholder";
 import {Link} from "@tiptap/extension-link";
 import EditLink from "./Link/EditLink";
 import {Youtube} from "@tiptap/extension-youtube";
-import GalleryModal from "./GalleryModel";
+import GalleryModal, {ImageSelectionResult} from "./GalleryModel";
+import TiptapImage from '@tiptap/extension-image'
 
 
 
@@ -35,7 +36,12 @@ function Editor() {
                 HTMLAttributes: {
                     class: 'mx-auto rounded',
                 }
-            },)
+            },),
+            TiptapImage.configure({
+                HTMLAttributes: {
+                    class: 'mx-auto'
+                }
+            })
         ],
         editorProps: {
             handleClick(view, pos , event ) {
@@ -56,6 +62,12 @@ function Editor() {
         }
     },[editor,selectionRange])
 
+    const handleImageSelection = (result: ImageSelectionResult) => {
+        if(!editor) return
+        editor.chain().focus().setImage({src: result.src, alt: result.altText}).run()
+
+    }
+
     return (
         <>
         <div className='p-3 dark:bg-primary-dark bg-primary transition'>
@@ -64,7 +76,7 @@ function Editor() {
             {editor ? <EditLink editor={editor} /> : null}
             <EditorContent editor={editor}/>
         </div>
-            <GalleryModal onClose={()=> setShowGallery(false)} visible={showGallery} />
+            <GalleryModal  onSelect={handleImageSelection} onClose={()=> setShowGallery(false)} visible={showGallery} />
         </>
     );
 };

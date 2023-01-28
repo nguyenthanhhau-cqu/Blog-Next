@@ -1,8 +1,17 @@
-import React, {useState} from 'react';
+import React, {ChangeEventHandler, useCallback, useState} from 'react';
 import ModalContainer, {ModelContainerProps} from "../../common/ModalContainer";
 import Gallery from "./Gallery";
 import NextImage from "next/image";
+import ActionButton from "../../common/ActionButton";
+import {AiOutlineCloudUpload} from "react-icons/all";
+
+export interface  ImageSelectionResult {
+    src: string
+    altText: string
+}
 interface IndexProps extends ModelContainerProps{
+    onFileSelect(image: File): void
+    onSelect(result: ImageSelectionResult): void
 
 }
 const images1= [
@@ -79,9 +88,27 @@ const images1= [
         src: "https://images.unsplash.com/photo-1663657471161-30b3d75d82cb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDM1fDZzTVZqVExTa2VRfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
     },
 ]
-function GalleryModal({visible, onClose}:IndexProps) {
+function GalleryModal({visible, onFileSelect,onSelect, onClose}:IndexProps) {
 
     const [selectedImage,setSelectedImage] = useState('')
+    const [altText,setAltText] = useState('')
+
+    const handleOnImageChange:ChangeEventHandler<HTMLInputElement> = ({target}) => {
+        const {files} = target
+        if(!files) return
+
+        const file = files[0]
+        if(!file.type.startsWith('image')) return onClose && onClose()
+
+        onFileSelect(file)
+    }
+    const handleClose = useCallback(()=> onClose && onClose(),[onClose])
+    const handleSubmit = () => {
+        if (!selectedImage) return onClose && onClose()
+        onSelect({src: selectedImage, altText })
+        handleClose()
+
+    }
 
  return (
   <ModalContainer visible={visible} onClose={onClose}>
@@ -90,9 +117,26 @@ function GalleryModal({visible, onClose}:IndexProps) {
             <div className='basis-[75%] max-h-[450px] overflow-y-auto custom-scroll-bar'>
                 <Gallery  images={images1} onSelect={(src) => setSelectedImage(src)} selectedImage={selectedImage}  />
             </div>
-            <div className='basis-1/4'>
-                <div className='relative aspect-video bg-png-pattern'>
-                    <NextImage src={selectedImage} alt='selected image' fill style={{objectFit:"contain"}} />
+            <div className='basis-1/4 px-2'>
+                <div className='space-y-4'>
+                    <div>
+                        <input onChange={handleOnImageChange} hidden type='file' id='image-input'/>
+                    <label htmlFor='image-input'>
+                        <div className=' w-full border-2 border-action text-action flex items-center justify-center space-x-2 p-2 cursor-pointer rounded'>
+                            <AiOutlineCloudUpload />
+                            <span> Upload image </span>
+                        </div>
+                    </label>
+                    </div>
+
+                {selectedImage ? <>
+                <textarea value={altText} onChange={({target})=> setAltText(target.value) } placeholder='Alt text' className='resize-none w-full rounded bg-transparent
+      border-2 border-secondary-dark focus:ring-1 text-primary dark:text-primary-dark h-32 px-2 '></textarea>
+                    <ActionButton  title='Select' onClick={handleSubmit} />
+                    <div className='relative aspect-video  bg-transparent '>
+                        <NextImage src={selectedImage} alt='selected image' fill style={{objectFit:"contain"}} />
+                    </div>
+                </>: null}
                 </div>
             </div>
         </div>

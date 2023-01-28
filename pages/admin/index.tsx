@@ -1,5 +1,7 @@
 import React from 'react';
 import AdminLayout from "../../layout/AdminLayout";
+import Link from "next/link";
+import {AiOutlineFileAdd} from "react-icons/ai";
 
 function Admin() {
 
@@ -17,6 +19,12 @@ function Admin() {
                 perferendis doloribus asperiores repellat.
             </div>
 
+            <Link href="/admin/post/create">
+                <div
+                    className="bg-secondary-dark dark:bg-secondary-light text-primary dark:text-primary-dark fixed z-10 right-10 bottom-10 p-3 rounded-full hover:scale-90 shadow-sm transition">
+                    <AiOutlineFileAdd size={24}/>
+                </div>
+            </Link>
 
 
         </AdminLayout>
